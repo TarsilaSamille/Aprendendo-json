@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leaflet Map with a Feature Layer</title>
+<meta name='viewport'
+	content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<!-- Load Leaflet from CDN-->
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+<!-- Load Esri Leaflet from CDN -->
+<script src="https://unpkg.com/esri-leaflet@2.0.4/dist/esri-leaflet.js"></script>
+
+<!-- Load Esri Leaflet Renderers from CDN -->
+<script
+	src="https://unpkg.com/esri-leaflet-renderers@2.0.2/dist/esri-leaflet-renderers.js"></script>
+
+<style>
+html, body, #map {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+        var map = L.map('map', {
+          center: [45.526, -122.667],
+          zoom: 13
+        });
+
+        var esriStreets = L.esri.basemapLayer('Streets').addTo(map);
+
+        var portlandHeritageTrees = L.esri.featureLayer({url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0'}).addTo(map);
+
+        portlandHeritageTrees.bindPopup(function(evt) {
+            return L.Util.template('<h3>{COMMON_NAM}</h3><hr /><p>This tree is located at {ADDRESS} and its scientific name is {SCIENTIFIC}.', evt.feature.properties);
+        });          
+    </script>
+</body>
+</html>
